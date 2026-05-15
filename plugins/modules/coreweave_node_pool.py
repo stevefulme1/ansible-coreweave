@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # Copyright 2026 Steve Fulmer
 # Apache-2.0 (see LICENSE)
+# GNU General Public License v3.0+
+# (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 """Ansible module: coreweave_node_pool."""
 
@@ -24,12 +26,25 @@ options:
         type: str
         default: present
         choices: [present, absent]
-    pool_name:
-        description: Unique identifier of the node pool.
+    host:
+        description: API host address.
         type: str
-    name:
-        description: Display name of the node pool.
+        required: true
+    username:
+        description: Authentication username.
         type: str
+    password:
+        description: Authentication password.
+        type: str
+        no_log: true
+    api_key:
+        description: API key for authentication.
+        type: str
+        no_log: true
+    validate_certs:
+        description: Whether to validate SSL certificates.
+        type: bool
+        default: true
 """
 
 EXAMPLES = r"""
