@@ -1,0 +1,104 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# Copyright 2026 Steve Fulmer
+# Apache-2.0 (see LICENSE)
+
+"""Ansible module: coreweave_vpc."""
+
+from __future__ import absolute_import, division, print_function
+__metaclass__ = type
+
+DOCUMENTATION = r"""
+---
+module: coreweave_vpc
+short_description: Manage CoreWeave Virtual Private Clouds
+description:
+    - Manage CoreWeave Virtual Private Clouds in Coreweave.
+    - Supports create, update, and delete operations.
+version_added: "1.0.0"
+author:
+    - Steve Fulmer (@stevefulme1)
+options:
+    state:
+        description: Desired state of the resource.
+        type: str
+        default: present
+        choices: [present, absent]
+    vpc_name:
+        description: Unique identifier of the vpc.
+        type: str
+    name:
+        description: Display name of the vpc.
+        type: str
+"""
+
+EXAMPLES = r"""
+- name: Create a vpc
+  stevefulme1.coreweave.coreweave_vpc:
+    name: my-vpc
+    state: present
+
+- name: Delete a vpc
+  stevefulme1.coreweave.coreweave_vpc:
+    vpc_name: "example-id"
+    state: absent
+"""
+
+RETURN = r"""
+vpc:
+    description: Resource details.
+    returned: on success
+    type: dict
+"""
+
+from ansible.module_utils.basic import AnsibleModule
+
+try:
+    from ansible_collections.stevefulme1.coreweave.plugins.module_utils.api_client import ApiClient
+    HAS_CLIENT = True
+except ImportError:
+    HAS_CLIENT = False
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            state=dict(type="str", default="present", choices=["present", "absent"]),
+            vpc_name=dict(type="str"),
+            name=dict(type="str"),
+            host=dict(type="str", required=True),
+            username=dict(type="str"),
+            password=dict(type="str", no_log=True),
+            api_key=dict(type="str", no_log=True),
+            validate_certs=dict(type="bool", default=True),
+        ),
+        supports_check_mode=True,
+        required_if=[
+            ("state", "absent", ("vpc_name",)),
+        ],
+    )
+
+    if not HAS_CLIENT:
+        module.fail_json(msg="Required Python libraries not found.")
+
+    client = ApiClient(module)
+    state = module.params["state"]
+    resource_id = module.params.get("vpc_name")
+
+    if state == "present":
+        if resource_id:
+            result = client.update("vpc", resource_id, module.params)
+        else:
+            if module.check_mode:
+                module.exit_json(changed=True)
+            result = client.create("vpc", module.params)
+        module.exit_json(changed=True, vpc=result)
+    else:
+        if module.check_mode:
+            module.exit_json(changed=True)
+        client.delete("vpc", resource_id)
+        module.exit_json(changed=True)
+
+
+if __name__ == "__main__":
+    main()

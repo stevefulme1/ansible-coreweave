@@ -1,0 +1,34 @@
+---
+namespace: stevefulme1
+name: coreweave
+version: 1.0.0
+readme: README.md
+authors:
+  - Steve Fulmer <sfulmer@redhat.com>
+description: Ansible collection for managing CoreWeave cloud infrastructure
+license:
+  - Apache-2.0
+license_file: LICENSE
+tags:
+  - coreweave
+  - cloud
+  - gpu
+  - kubernetes
+  - ai
+  - ml
+dependencies:
+  kubernetes.core: '>=2.4.0'
+repository: https://github.com/stevefulme1/ansible-coreweave
+documentation: https://github.com/stevefulme1/ansible-coreweave
+homepage: https://github.com/stevefulme1/ansible-coreweave
+issues: https://github.com/stevefulme1/ansible-coreweave/issues
+build_ignore:
+  - '*.pyc'
+  - '*.retry'
+  - '.git'
+  - '.gitignore'
+  - '.pytest_cache'
+  - '__pycache__'
+  - 'tests/output'
+  - '.vscode'
+  - '.idea'
