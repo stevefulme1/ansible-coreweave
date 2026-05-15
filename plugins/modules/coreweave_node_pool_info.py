@@ -40,6 +40,10 @@ options:
         description: Whether to validate SSL certificates.
         type: bool
         default: true
+
+    pool_name:
+        description: The pool name.
+        type: str
 """
 
 EXAMPLES = r"""

@@ -1,33 +1,12 @@
----
 requires_ansible: '>=2.16.0'
 action_groups:
   coreweave:
-    - coreweave_virtual_server
-    - coreweave_virtual_server_info
-    - coreweave_inference_service
-    - coreweave_inference_service_info
-    - coreweave_vpc
-    - coreweave_vpc_info
-    - coreweave_storage_volume
-    - coreweave_storage_volume_info
-    - coreweave_node_pool_info
-plugin_routing:
-  modules:
-    coreweave_virtual_server:
-      redirect: stevefulme1.coreweave.coreweave_virtual_server
-    coreweave_virtual_server_info:
-      redirect: stevefulme1.coreweave.coreweave_virtual_server_info
-    coreweave_inference_service:
-      redirect: stevefulme1.coreweave.coreweave_inference_service
-    coreweave_inference_service_info:
-      redirect: stevefulme1.coreweave.coreweave_inference_service_info
-    coreweave_vpc:
-      redirect: stevefulme1.coreweave.coreweave_vpc
-    coreweave_vpc_info:
-      redirect: stevefulme1.coreweave.coreweave_vpc_info
-    coreweave_storage_volume:
-      redirect: stevefulme1.coreweave.coreweave_storage_volume
-    coreweave_storage_volume_info:
-      redirect: stevefulme1.coreweave.coreweave_storage_volume_info
-    coreweave_node_pool_info:
-      redirect: stevefulme1.coreweave.coreweave_node_pool_info
+  - coreweave_virtual_server
+  - coreweave_virtual_server_info
+  - coreweave_inference_service
+  - coreweave_inference_service_info
+  - coreweave_vpc
+  - coreweave_vpc_info
+  - coreweave_storage_volume
+  - coreweave_storage_volume_info
+  - coreweave_node_pool_info

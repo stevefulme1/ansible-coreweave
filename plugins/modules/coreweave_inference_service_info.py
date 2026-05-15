@@ -40,6 +40,10 @@ options:
         description: Whether to validate SSL certificates.
         type: bool
         default: true
+
+    service_name:
+        description: The service name.
+        type: str
 """
 
 EXAMPLES = r"""

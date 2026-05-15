@@ -40,6 +40,10 @@ options:
         description: Whether to validate SSL certificates.
         type: bool
         default: true
+
+    volume_name:
+        description: The volume name.
+        type: str
 """
 
 EXAMPLES = r"""

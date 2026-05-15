@@ -40,6 +40,10 @@ options:
         description: Whether to validate SSL certificates.
         type: bool
         default: true
+
+    vpc_name:
+        description: The vpc name.
+        type: str
 """
 
 EXAMPLES = r"""
