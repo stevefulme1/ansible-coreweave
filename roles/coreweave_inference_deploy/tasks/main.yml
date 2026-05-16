@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for coreweave_inference_deploy
+# Deploy inference service with autoscaling
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - coreweave_inference_deploy_host is defined
+    fail_msg: "coreweave_inference_deploy_host must be defined"
+    quiet: true
+
+- name: Execute coreweave inference deploy
+  ansible.builtin.debug:
+    msg: >-
+      Deploy inference service with autoscaling.
+      Target: {{ coreweave_inference_deploy_host }}

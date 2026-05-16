@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for coreweave_cost_optimization
+
+# Target host
+coreweave_cost_optimization_host: ""
+
+# Authentication
+coreweave_cost_optimization_username: ""
+coreweave_cost_optimization_password: ""
+coreweave_cost_optimization_api_key: ""
+
+# Behavior
+coreweave_cost_optimization_validate_certs: true
+coreweave_cost_optimization_state: present

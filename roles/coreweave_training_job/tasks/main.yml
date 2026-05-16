@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for coreweave_training_job
+# Launch and manage ML training jobs
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - coreweave_training_job_host is defined
+    fail_msg: "coreweave_training_job_host must be defined"
+    quiet: true
+
+- name: Execute coreweave training job
+  ansible.builtin.debug:
+    msg: >-
+      Launch and manage ML training jobs.
+      Target: {{ coreweave_training_job_host }}

@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for coreweave_monitoring
+# Set up workload monitoring
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - coreweave_monitoring_host is defined
+    fail_msg: "coreweave_monitoring_host must be defined"
+    quiet: true
+
+- name: Execute coreweave monitoring
+  ansible.builtin.debug:
+    msg: >-
+      Set up workload monitoring.
+      Target: {{ coreweave_monitoring_host }}

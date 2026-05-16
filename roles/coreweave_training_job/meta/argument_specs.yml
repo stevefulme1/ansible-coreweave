@@ -1,0 +1,27 @@
+---
+argument_specs:
+  main:
+    short_description: "Launch and manage ML training jobs"
+    options:
+      coreweave_training_job_host:
+        description: Target host address
+        type: str
+        required: true
+      coreweave_training_job_username:
+        description: Authentication username
+        type: str
+      coreweave_training_job_password:
+        description: Authentication password
+        type: str
+      coreweave_training_job_api_key:
+        description: API key for authentication
+        type: str
+      coreweave_training_job_validate_certs:
+        description: Validate SSL certificates
+        type: bool
+        default: true
+      coreweave_training_job_state:
+        description: Desired state
+        type: str
+        default: present
+        choices: [present, absent]

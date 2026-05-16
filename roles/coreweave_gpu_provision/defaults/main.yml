@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for coreweave_gpu_provision
+
+# Target host
+coreweave_gpu_provision_host: ""
+
+# Authentication
+coreweave_gpu_provision_username: ""
+coreweave_gpu_provision_password: ""
+coreweave_gpu_provision_api_key: ""
+
+# Behavior
+coreweave_gpu_provision_validate_certs: true
+coreweave_gpu_provision_state: present

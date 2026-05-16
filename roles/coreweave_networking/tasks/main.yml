@@ -1,0 +1,16 @@
+---
+# tasks/main.yml for coreweave_networking
+# Configure load balancers and ingress
+
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - coreweave_networking_host is defined
+    fail_msg: "coreweave_networking_host must be defined"
+    quiet: true
+
+- name: Execute coreweave networking
+  ansible.builtin.debug:
+    msg: >-
+      Configure load balancers and ingress.
+      Target: {{ coreweave_networking_host }}

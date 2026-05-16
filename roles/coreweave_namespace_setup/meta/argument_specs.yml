@@ -1,0 +1,27 @@
+---
+argument_specs:
+  main:
+    short_description: "Configure namespace with quotas and policies"
+    options:
+      coreweave_namespace_setup_host:
+        description: Target host address
+        type: str
+        required: true
+      coreweave_namespace_setup_username:
+        description: Authentication username
+        type: str
+      coreweave_namespace_setup_password:
+        description: Authentication password
+        type: str
+      coreweave_namespace_setup_api_key:
+        description: API key for authentication
+        type: str
+      coreweave_namespace_setup_validate_certs:
+        description: Validate SSL certificates
+        type: bool
+        default: true
+      coreweave_namespace_setup_state:
+        description: Desired state
+        type: str
+        default: present
+        choices: [present, absent]

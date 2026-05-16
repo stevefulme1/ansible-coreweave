@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for coreweave_teardown
+
+# Target host
+coreweave_teardown_host: ""
+
+# Authentication
+coreweave_teardown_username: ""
+coreweave_teardown_password: ""
+coreweave_teardown_api_key: ""
+
+# Behavior
+coreweave_teardown_validate_certs: true
+coreweave_teardown_state: present

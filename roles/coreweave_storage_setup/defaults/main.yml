@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for coreweave_storage_setup
+
+# Target host
+coreweave_storage_setup_host: ""
+
+# Authentication
+coreweave_storage_setup_username: ""
+coreweave_storage_setup_password: ""
+coreweave_storage_setup_api_key: ""
+
+# Behavior
+coreweave_storage_setup_validate_certs: true
+coreweave_storage_setup_state: present

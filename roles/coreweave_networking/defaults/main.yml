@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for coreweave_networking
+
+# Target host
+coreweave_networking_host: ""
+
+# Authentication
+coreweave_networking_username: ""
+coreweave_networking_password: ""
+coreweave_networking_api_key: ""
+
+# Behavior
+coreweave_networking_validate_certs: true
+coreweave_networking_state: present

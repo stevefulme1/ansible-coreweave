@@ -1,0 +1,14 @@
+---
+# defaults/main.yml for coreweave_monitoring
+
+# Target host
+coreweave_monitoring_host: ""
+
+# Authentication
+coreweave_monitoring_username: ""
+coreweave_monitoring_password: ""
+coreweave_monitoring_api_key: ""
+
+# Behavior
+coreweave_monitoring_validate_certs: true
+coreweave_monitoring_state: present
