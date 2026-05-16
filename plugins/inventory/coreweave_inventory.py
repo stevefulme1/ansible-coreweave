@@ -7,12 +7,12 @@
 """coreweave dynamic inventory plugin."""
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 DOCUMENTATION = r"""
 ---
 name: coreweave_inventory
-plugin_type: inventory
 short_description: GPU instances from CoreWeave K8s API
 description:
     - Dynamically discovers GPU instances from CoreWeave K8s API.
@@ -59,6 +59,7 @@ from ansible.plugins.inventory import BaseInventoryPlugin
 
 try:
     import requests
+
     HAS_REQUESTS = True
 except ImportError:
     HAS_REQUESTS = False
@@ -69,7 +70,9 @@ class InventoryModule(BaseInventoryPlugin):
 
     def verify_file(self, path):
         if super().verify_file(path):
-            return path.endswith(("coreweave_inventory.yml", "coreweave_inventory.yaml"))
+            return path.endswith(
+                ("coreweave_inventory.yml", "coreweave_inventory.yaml")
+            )
         return False
 
     def parse(self, inventory, loader, path, cache=True):
