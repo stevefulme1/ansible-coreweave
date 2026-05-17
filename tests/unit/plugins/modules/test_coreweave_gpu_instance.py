@@ -18,6 +18,7 @@ def mock_api_client():
     """Mock API client for coreweave_gpu_instance."""
     client = MagicMock()
     client.get.return_value = None
+    client.create.return_value = {"id": "res-123", "name": "test-gpu_instance"}
     client.update.return_value = {"instance_id": "res-123", "name": "test-gpu_instance-updated"}
     client.delete.return_value = None
     client.list.return_value = []

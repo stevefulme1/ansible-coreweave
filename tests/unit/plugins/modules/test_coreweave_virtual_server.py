@@ -18,6 +18,7 @@ def mock_api_client():
     """Mock API client for coreweave_virtual_server."""
     client = MagicMock()
     client.get.return_value = None
+    client.create.return_value = {"id": "res-123", "name": "test-virtual_server"}
     client.update.return_value = {"server_id": "res-123", "name": "test-virtual_server-updated"}
     client.delete.return_value = None
     client.list.return_value = []
