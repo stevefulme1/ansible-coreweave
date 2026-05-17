@@ -104,14 +104,30 @@ def main():
     resource_id = module.params.get("rule_name")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("node_affinity", resource_id, module.params)
+            existing = client.get("node_affinity", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("node_affinity", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, node_affinity=existing)
+            result = client.update("node_affinity", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, node_affinity=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("node_affinity", module.params)
-        module.exit_json(changed=True, node_affinity=result)
+            module.exit_json(changed=True, node_affinity=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("node_affinity", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("node_affinity", resource_id)

@@ -101,14 +101,30 @@ def main():
     resource_id = module.params.get("vpc_name")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("vpc", resource_id, module.params)
+            existing = client.get("vpc", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("vpc", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, vpc=existing)
+            result = client.update("vpc", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, vpc=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("vpc", module.params)
-        module.exit_json(changed=True, vpc=result)
+            module.exit_json(changed=True, vpc=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("vpc", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("vpc", resource_id)

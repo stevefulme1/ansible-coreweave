@@ -104,14 +104,30 @@ def main():
     resource_id = module.params.get("ip_id")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("floating_ip", resource_id, module.params)
+            existing = client.get("floating_ip", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("floating_ip", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, floating_ip=existing)
+            result = client.update("floating_ip", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, floating_ip=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("floating_ip", module.params)
-        module.exit_json(changed=True, floating_ip=result)
+            module.exit_json(changed=True, floating_ip=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("floating_ip", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("floating_ip", resource_id)

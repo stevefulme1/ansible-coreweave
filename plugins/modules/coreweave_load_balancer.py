@@ -104,14 +104,30 @@ def main():
     resource_id = module.params.get("lb_name")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("load_balancer", resource_id, module.params)
+            existing = client.get("load_balancer", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("load_balancer", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, load_balancer=existing)
+            result = client.update("load_balancer", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, load_balancer=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("load_balancer", module.params)
-        module.exit_json(changed=True, load_balancer=result)
+            module.exit_json(changed=True, load_balancer=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("load_balancer", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("load_balancer", resource_id)

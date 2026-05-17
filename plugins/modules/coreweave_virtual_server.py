@@ -101,14 +101,30 @@ def main():
     resource_id = module.params.get("server_name")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("virtual_server", resource_id, module.params)
+            existing = client.get("virtual_server", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("virtual_server", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, virtual_server=existing)
+            result = client.update("virtual_server", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, virtual_server=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("virtual_server", module.params)
-        module.exit_json(changed=True, virtual_server=result)
+            module.exit_json(changed=True, virtual_server=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("virtual_server", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("virtual_server", resource_id)

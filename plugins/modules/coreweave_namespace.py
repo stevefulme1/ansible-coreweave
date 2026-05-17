@@ -104,14 +104,30 @@ def main():
     resource_id = module.params.get("namespace_name")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("namespace", resource_id, module.params)
+            existing = client.get("namespace", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("namespace", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, namespace=existing)
+            result = client.update("namespace", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, namespace=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("namespace", module.params)
-        module.exit_json(changed=True, namespace=result)
+            module.exit_json(changed=True, namespace=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("namespace", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("namespace", resource_id)

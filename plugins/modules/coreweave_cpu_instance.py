@@ -104,14 +104,30 @@ def main():
     resource_id = module.params.get("instance_name")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("cpu_instance", resource_id, module.params)
+            existing = client.get("cpu_instance", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("cpu_instance", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, cpu_instance=existing)
+            result = client.update("cpu_instance", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, cpu_instance=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("cpu_instance", module.params)
-        module.exit_json(changed=True, cpu_instance=result)
+            module.exit_json(changed=True, cpu_instance=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("cpu_instance", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("cpu_instance", resource_id)

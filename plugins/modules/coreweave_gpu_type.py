@@ -104,14 +104,30 @@ def main():
     resource_id = module.params.get("gpu_name")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("gpu_type", resource_id, module.params)
+            existing = client.get("gpu_type", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("gpu_type", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, gpu_type=existing)
+            result = client.update("gpu_type", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, gpu_type=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("gpu_type", module.params)
-        module.exit_json(changed=True, gpu_type=result)
+            module.exit_json(changed=True, gpu_type=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("gpu_type", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("gpu_type", resource_id)

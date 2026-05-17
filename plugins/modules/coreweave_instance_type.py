@@ -104,14 +104,30 @@ def main():
     resource_id = module.params.get("type_name")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("instance_type", resource_id, module.params)
+            existing = client.get("instance_type", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("instance_type", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, instance_type=existing)
+            result = client.update("instance_type", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, instance_type=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("instance_type", module.params)
-        module.exit_json(changed=True, instance_type=result)
+            module.exit_json(changed=True, instance_type=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("instance_type", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("instance_type", resource_id)

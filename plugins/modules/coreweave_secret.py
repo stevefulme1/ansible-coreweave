@@ -104,14 +104,30 @@ def main():
     resource_id = module.params.get("secret_name")
 
     if state == "present":
+        existing = None
         if resource_id:
-            result = client.update("secret", resource_id, module.params)
+            existing = client.get("secret", resource_id)
+        elif module.params.get("name"):
+            candidates = client.list("secret", {{"name": module.params["name"]}})
+            if candidates:
+                existing = candidates[0]
+
+        if existing:
+            if module.check_mode:
+                module.exit_json(changed=False, secret=existing)
+            result = client.update("secret", resource_id or existing.get("id", ""), module.params)
+            module.exit_json(changed=True, secret=result)
         else:
             if module.check_mode:
                 module.exit_json(changed=True)
             result = client.create("secret", module.params)
-        module.exit_json(changed=True, secret=result)
+            module.exit_json(changed=True, secret=result)
     else:
+        existing = None
+        if resource_id:
+            existing = client.get("secret", resource_id)
+        if not existing:
+            module.exit_json(changed=False)
         if module.check_mode:
             module.exit_json(changed=True)
         client.delete("secret", resource_id)
