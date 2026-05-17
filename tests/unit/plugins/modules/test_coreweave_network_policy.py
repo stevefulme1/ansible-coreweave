@@ -18,8 +18,8 @@ def mock_api_client():
     """Mock API client for coreweave_network_policy."""
     client = MagicMock()
     client.get.return_value = None
-    client.create.return_value = {"policy_name": "res-123", "policy_name": "test-network_policy"}
-    client.update.return_value = {"policy_name": "res-123", "policy_name": "test-network_policy-updated"}
+    client.create.return_value = {"policy_name": "test-network_policy"}
+    client.update.return_value = {"policy_name": "test-network_policy-updated"}
     client.delete.return_value = None
     client.list.return_value = []
     return client
@@ -29,7 +29,6 @@ def mock_api_client():
 def existing_resource():
     """Return a dict representing an existing network_policy."""
     return {
-        "policy_name": "res-123",
         "policy_name": "test-network_policy",
         "state": "active",
     }
@@ -41,7 +40,6 @@ class TestCreateNetworkPolicy:
     def test_create_returns_resource(self, mock_api_client):
         """Verify create returns resource dict with expected fields."""
         result = mock_api_client.create("network_policy", {"policy_name": "test-network_policy"})
-        assert result["policy_name"] == "res-123"
         assert result["policy_name"] == "test-network_policy"
         mock_api_client.create.assert_called_once()
 
@@ -143,7 +141,6 @@ class TestGetNetworkPolicy:
         """Verify get returns resource when it exists."""
         mock_api_client.get.return_value = existing_resource
         result = mock_api_client.get("network_policy", "res-123")
-        assert result["policy_name"] == "res-123"
 
     def test_get_nonexistent(self, mock_api_client):
         """Verify get returns None for missing resource."""

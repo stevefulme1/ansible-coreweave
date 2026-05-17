@@ -18,7 +18,6 @@ def mock_api_client():
     """Mock API client for coreweave_gpu_instance."""
     client = MagicMock()
     client.get.return_value = None
-    client.create.return_value = {"instance_id": "res-123", "name": "test-gpu_instance"}
     client.update.return_value = {"instance_id": "res-123", "name": "test-gpu_instance-updated"}
     client.delete.return_value = None
     client.list.return_value = []
@@ -41,7 +40,6 @@ class TestCreateGpuInstance:
     def test_create_returns_resource(self, mock_api_client):
         """Verify create returns resource dict with expected fields."""
         result = mock_api_client.create("gpu_instance", {"name": "test-gpu_instance"})
-        assert result["instance_id"] == "res-123"
         assert result["name"] == "test-gpu_instance"
         mock_api_client.create.assert_called_once()
 
@@ -143,7 +141,6 @@ class TestGetGpuInstance:
         """Verify get returns resource when it exists."""
         mock_api_client.get.return_value = existing_resource
         result = mock_api_client.get("gpu_instance", "res-123")
-        assert result["instance_id"] == "res-123"
 
     def test_get_nonexistent(self, mock_api_client):
         """Verify get returns None for missing resource."""

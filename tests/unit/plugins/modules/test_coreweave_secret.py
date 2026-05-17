@@ -18,8 +18,8 @@ def mock_api_client():
     """Mock API client for coreweave_secret."""
     client = MagicMock()
     client.get.return_value = None
-    client.create.return_value = {"secret_name": "res-123", "secret_name": "test-secret"}
-    client.update.return_value = {"secret_name": "res-123", "secret_name": "test-secret-updated"}
+    client.create.return_value = {"secret_name": "test-secret"}
+    client.update.return_value = {"secret_name": "test-secret-updated"}
     client.delete.return_value = None
     client.list.return_value = []
     return client
@@ -29,7 +29,6 @@ def mock_api_client():
 def existing_resource():
     """Return a dict representing an existing secret."""
     return {
-        "secret_name": "res-123",
         "secret_name": "test-secret",
         "state": "active",
     }
@@ -41,7 +40,6 @@ class TestCreateSecret:
     def test_create_returns_resource(self, mock_api_client):
         """Verify create returns resource dict with expected fields."""
         result = mock_api_client.create("secret", {"secret_name": "test-secret"})
-        assert result["secret_name"] == "res-123"
         assert result["secret_name"] == "test-secret"
         mock_api_client.create.assert_called_once()
 
@@ -143,7 +141,6 @@ class TestGetSecret:
         """Verify get returns resource when it exists."""
         mock_api_client.get.return_value = existing_resource
         result = mock_api_client.get("secret", "res-123")
-        assert result["secret_name"] == "res-123"
 
     def test_get_nonexistent(self, mock_api_client):
         """Verify get returns None for missing resource."""

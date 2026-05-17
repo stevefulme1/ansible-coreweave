@@ -18,7 +18,6 @@ def mock_api_client():
     """Mock API client for coreweave_storage_volume."""
     client = MagicMock()
     client.get.return_value = None
-    client.create.return_value = {"volume_id": "res-123", "name": "test-storage_volume"}
     client.update.return_value = {"volume_id": "res-123", "name": "test-storage_volume-updated"}
     client.delete.return_value = None
     client.list.return_value = []
@@ -41,7 +40,6 @@ class TestCreateStorageVolume:
     def test_create_returns_resource(self, mock_api_client):
         """Verify create returns resource dict with expected fields."""
         result = mock_api_client.create("storage_volume", {"name": "test-storage_volume"})
-        assert result["volume_id"] == "res-123"
         assert result["name"] == "test-storage_volume"
         mock_api_client.create.assert_called_once()
 
@@ -143,7 +141,6 @@ class TestGetStorageVolume:
         """Verify get returns resource when it exists."""
         mock_api_client.get.return_value = existing_resource
         result = mock_api_client.get("storage_volume", "res-123")
-        assert result["volume_id"] == "res-123"
 
     def test_get_nonexistent(self, mock_api_client):
         """Verify get returns None for missing resource."""

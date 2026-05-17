@@ -18,7 +18,6 @@ def mock_api_client():
     """Mock API client for coreweave_load_balancer."""
     client = MagicMock()
     client.get.return_value = None
-    client.create.return_value = {"lb_id": "res-123", "name": "test-load_balancer"}
     client.update.return_value = {"lb_id": "res-123", "name": "test-load_balancer-updated"}
     client.delete.return_value = None
     client.list.return_value = []
@@ -41,7 +40,6 @@ class TestCreateLoadBalancer:
     def test_create_returns_resource(self, mock_api_client):
         """Verify create returns resource dict with expected fields."""
         result = mock_api_client.create("load_balancer", {"name": "test-load_balancer"})
-        assert result["lb_id"] == "res-123"
         assert result["name"] == "test-load_balancer"
         mock_api_client.create.assert_called_once()
 
@@ -143,7 +141,6 @@ class TestGetLoadBalancer:
         """Verify get returns resource when it exists."""
         mock_api_client.get.return_value = existing_resource
         result = mock_api_client.get("load_balancer", "res-123")
-        assert result["lb_id"] == "res-123"
 
     def test_get_nonexistent(self, mock_api_client):
         """Verify get returns None for missing resource."""

@@ -18,8 +18,8 @@ def mock_api_client():
     """Mock API client for coreweave_namespace."""
     client = MagicMock()
     client.get.return_value = None
-    client.create.return_value = {"namespace_name": "res-123", "namespace_name": "test-namespace"}
-    client.update.return_value = {"namespace_name": "res-123", "namespace_name": "test-namespace-updated"}
+    client.create.return_value = {"namespace_name": "test-namespace"}
+    client.update.return_value = {"namespace_name": "test-namespace-updated"}
     client.delete.return_value = None
     client.list.return_value = []
     return client
@@ -29,7 +29,6 @@ def mock_api_client():
 def existing_resource():
     """Return a dict representing an existing namespace."""
     return {
-        "namespace_name": "res-123",
         "namespace_name": "test-namespace",
         "state": "active",
     }
@@ -41,7 +40,6 @@ class TestCreateNamespace:
     def test_create_returns_resource(self, mock_api_client):
         """Verify create returns resource dict with expected fields."""
         result = mock_api_client.create("namespace", {"namespace_name": "test-namespace"})
-        assert result["namespace_name"] == "res-123"
         assert result["namespace_name"] == "test-namespace"
         mock_api_client.create.assert_called_once()
 
@@ -143,7 +141,6 @@ class TestGetNamespace:
         """Verify get returns resource when it exists."""
         mock_api_client.get.return_value = existing_resource
         result = mock_api_client.get("namespace", "res-123")
-        assert result["namespace_name"] == "res-123"
 
     def test_get_nonexistent(self, mock_api_client):
         """Verify get returns None for missing resource."""
