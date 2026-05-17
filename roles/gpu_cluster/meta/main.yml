@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  role_name: gpu_cluster
+  author: Red Hat Ansible
+  description: Provision CoreWeave GPU VM clusters with networking and storage
+  license: GPL-3.0-or-later
+  min_ansible_version: "2.14"
+  platforms:
+    - name: EL
+      versions: [8, 9]
+  galaxy_tags: [coreweave, cloud, gpu, kubernetes, compute]
+dependencies: []

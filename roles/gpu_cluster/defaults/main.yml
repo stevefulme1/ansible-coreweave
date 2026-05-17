@@ -1,0 +1,40 @@
+---
+# Required
+# gpu_cluster_name: ""
+# gpu_type: ""  # e.g., "A100_PCIE_80GB", "H100_SXM5", "RTX_A6000"
+
+gpu_namespace: "default"
+gpu_count: 1
+gpu_node_count: 1
+gpu_state: present
+
+# VM configuration
+gpu_cpu_count: 8
+gpu_memory_gi: 32
+gpu_os_image: "ubuntu-22.04-docker"
+gpu_root_disk_size_gi: 80
+gpu_root_disk_storage_class: "block-nvme-ord1"
+
+# Region
+gpu_region: "ORD1"
+
+# Network
+gpu_network_type: "direct"
+gpu_public_ip: false
+gpu_internal_network: true
+
+# SSH
+gpu_ssh_key: ""
+gpu_user_data: ""
+
+# Affinity
+gpu_affinity_enabled: false
+gpu_affinity_type: "node"
+
+# Labels and annotations
+gpu_labels: {}
+gpu_annotations: {}
+
+# Kubernetes API
+gpu_kubeconfig: "{{ lookup('env', 'KUBECONFIG') }}"
+gpu_api_url: "{{ lookup('env', 'COREWEAVE_API_URL') }}"

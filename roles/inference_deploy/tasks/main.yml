@@ -1,0 +1,102 @@
+---
+- name: Validate required variables
+  ansible.builtin.assert:
+    that:
+      - inference_name is defined and inference_name | length > 0
+      - inference_model_image is defined and inference_model_image | length > 0
+    fail_msg: "Required variables: inference_name, inference_model_image"
+
+- name: Deploy inference service
+  block:
+    - name: Create InferenceService
+      kubernetes.core.k8s:
+        kubeconfig: "{{ gpu_kubeconfig }}"
+        state: "{{ inference_state }}"
+        definition:
+          apiVersion: serving.kubeflow.org/v1beta1
+          kind: InferenceService
+          metadata:
+            name: "{{ inference_name }}"
+            namespace: "{{ inference_namespace }}"
+            labels: "{{ inference_labels | combine({'app': inference_name}) }}"
+            annotations:
+              autoscaling.knative.dev/minScale: "{{ inference_min_replicas | string }}"
+              autoscaling.knative.dev/maxScale: "{{ inference_max_replicas | string }}"
+              autoscaling.knative.dev/target: "{{ inference_target_concurrency | string }}"
+              autoscaling.knative.dev/scaleDownDelay: "{{ inference_scale_down_delay }}"
+          spec:
+            predictor:
+              containers:
+                - name: "{{ inference_runtime }}"
+                  image: "{{ inference_model_image }}"
+                  ports:
+                    - containerPort: "{{ inference_port }}"
+                      protocol: TCP
+                  args: "{{ inference_args }}"
+                  env: >-
+                    {{ inference_env_vars | dict2items |
+                       map('combine', {'name': 'name', 'value': 'value'}) |
+                       list }}
+                  resources:
+                    requests:
+                      cpu: "{{ inference_cpu_count }}"
+                      memory: "{{ inference_memory_gi }}Gi"
+                      nvidia.com/gpu: "{{ inference_gpu_count }}"
+                    limits:
+                      cpu: "{{ inference_cpu_count }}"
+                      memory: "{{ inference_memory_gi }}Gi"
+                      nvidia.com/gpu: "{{ inference_gpu_count }}"
+                  readinessProbe:
+                    httpGet:
+                      path: "{{ inference_readiness_path }}"
+                      port: "{{ inference_port }}"
+                    initialDelaySeconds: 30
+                    periodSeconds: 10
+                  livenessProbe:
+                    httpGet:
+                      path: "{{ inference_health_path }}"
+                      port: "{{ inference_port }}"
+                    initialDelaySeconds: 60
+                    periodSeconds: 15
+                  volumeMounts: >-
+                    {{ [{'name': 'model-storage', 'mountPath': inference_model_mount_path}]
+                       if inference_model_pvc | length > 0 else [] }}
+              volumes: >-
+                {{ [{'name': 'model-storage', 'persistentVolumeClaim': {'claimName': inference_model_pvc}}]
+                   if inference_model_pvc | length > 0 else [] }}
+              nodeSelector:
+                gpu.nvidia.com/class: "{{ inference_gpu_type }}"
+                topology.kubernetes.io/region: "{{ inference_region }}"
+      register: _inference_svc
+
+    - name: Wait for InferenceService to become ready
+      kubernetes.core.k8s_info:
+        kubeconfig: "{{ gpu_kubeconfig }}"
+        api_version: serving.kubeflow.org/v1beta1
+        kind: InferenceService
+        namespace: "{{ inference_namespace }}"
+        name: "{{ inference_name }}"
+      register: _inference_status
+      until:
+        - _inference_status.resources | length > 0
+        - _inference_status.resources[0].status.conditions is defined
+        - _inference_status.resources[0].status.conditions | selectattr('type', 'equalto', 'Ready') | selectattr('status', 'equalto', 'True') | list | length > 0
+      retries: 60
+      delay: 10
+      when: inference_state == "present"
+
+    - name: Display inference endpoint
+      ansible.builtin.debug:
+        msg: >-
+          Inference service '{{ inference_name }}' deployed.
+          URL: {{ _inference_status.resources[0].status.url | default('Pending') }}
+      when:
+        - inference_state == "present"
+        - _inference_status is defined
+
+  rescue:
+    - name: Report inference deployment failure
+      ansible.builtin.fail:
+        msg: >-
+          Inference service deployment failed for '{{ inference_name }}'.
+          Error: {{ ansible_failed_result.msg | default('Unknown error') }}
