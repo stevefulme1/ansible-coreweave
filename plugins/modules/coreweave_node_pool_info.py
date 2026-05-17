@@ -44,6 +44,16 @@ options:
     pool_name:
         description: The pool name.
         type: str
+  limit:
+    description:
+      - Maximum number of results to return.
+    type: int
+    default: 100
+  offset:
+    description:
+      - Number of results to skip for pagination.
+    type: int
+    default: 0
 """
 
 EXAMPLES = r"""
@@ -77,6 +87,8 @@ except ImportError:
 def main():
     module = AnsibleModule(
         argument_spec=dict(
+            limit=dict(type='int', default=100),
+            offset=dict(type='int', default=0),
             pool_name=dict(type="str"),
             name=dict(type="str"),
             host=dict(type="str", required=True),
