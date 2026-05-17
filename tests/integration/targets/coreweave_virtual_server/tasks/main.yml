@@ -1,0 +1,90 @@
+---
+# Integration tests for stevefulme1.coreweave.coreweave_virtual_server
+# These tests require valid credentials configured in integration_config.yml
+
+- name: Create virtual_server (check_mode)
+  stevefulme1.coreweave.coreweave_virtual_server:
+    host: "{{ coreweave_host }}"
+    api_key: "{{ coreweave_api_key }}"
+    state: present
+    name: "ansible-test-{{ resource_prefix }}"
+    validate_certs: "{{ validate_certs | default(true) }}"
+  check_mode: true
+  register: check_result
+
+- name: Verify check_mode reports changed
+  ansible.builtin.assert:
+    that:
+      - check_result is changed
+
+- name: Create virtual_server
+  stevefulme1.coreweave.coreweave_virtual_server:
+    host: "{{ coreweave_host }}"
+    api_key: "{{ coreweave_api_key }}"
+    state: present
+    name: "ansible-test-{{ resource_prefix }}"
+    validate_certs: "{{ validate_certs | default(true) }}"
+  register: create_result
+
+- name: Verify virtual_server was created
+  ansible.builtin.assert:
+    that:
+      - create_result is changed
+      - create_result.virtual_server is defined
+
+- name: Create virtual_server again (idempotency)
+  stevefulme1.coreweave.coreweave_virtual_server:
+    host: "{{ coreweave_host }}"
+    api_key: "{{ coreweave_api_key }}"
+    state: present
+    name: "ansible-test-{{ resource_prefix }}"
+    validate_certs: "{{ validate_certs | default(true) }}"
+  register: idem_result
+
+- name: Verify idempotent create
+  ansible.builtin.assert:
+    that:
+      - idem_result is not changed
+
+- name: Delete virtual_server (check_mode)
+  stevefulme1.coreweave.coreweave_virtual_server:
+    host: "{{ coreweave_host }}"
+    api_key: "{{ coreweave_api_key }}"
+    state: absent
+    name: "ansible-test-{{ resource_prefix }}"
+    validate_certs: "{{ validate_certs | default(true) }}"
+  check_mode: true
+  register: delete_check
+
+- name: Verify check_mode delete reports changed
+  ansible.builtin.assert:
+    that:
+      - delete_check is changed
+
+- name: Delete virtual_server
+  stevefulme1.coreweave.coreweave_virtual_server:
+    host: "{{ coreweave_host }}"
+    api_key: "{{ coreweave_api_key }}"
+    state: absent
+    name: "ansible-test-{{ resource_prefix }}"
+    validate_certs: "{{ validate_certs | default(true) }}"
+  register: delete_result
+
+- name: Verify virtual_server was deleted
+  ansible.builtin.assert:
+    that:
+      - delete_result is changed
+
+- name: Delete virtual_server again (idempotent)
+  stevefulme1.coreweave.coreweave_virtual_server:
+    host: "{{ coreweave_host }}"
+    api_key: "{{ coreweave_api_key }}"
+    state: absent
+    name: "ansible-test-{{ resource_prefix }}"
+    validate_certs: "{{ validate_certs | default(true) }}"
+  register: delete_idem
+
+- name: Verify idempotent delete
+  ansible.builtin.assert:
+    that:
+      - delete_idem is not changed
