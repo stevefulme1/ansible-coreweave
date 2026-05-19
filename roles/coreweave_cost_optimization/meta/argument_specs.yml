@@ -13,9 +13,11 @@ argument_specs:
       coreweave_cost_optimization_password:
         description: Authentication password
         type: str
+        no_log: true
       coreweave_cost_optimization_api_key:
         description: API key for authentication
         type: str
+        no_log: true
       coreweave_cost_optimization_validate_certs:
         description: Validate SSL certificates
         type: bool

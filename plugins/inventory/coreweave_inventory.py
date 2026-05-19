@@ -32,6 +32,7 @@ options:
         type: str
         env:
             - name: COREWEAVE_API_KEY
+        secret: true
     username:
         description: Authentication username.
         type: str
@@ -42,6 +43,7 @@ options:
         type: str
         env:
             - name: COREWEAVE_PASSWORD
+        secret: true
     validate_certs:
         description: Validate SSL certificates.
         type: bool

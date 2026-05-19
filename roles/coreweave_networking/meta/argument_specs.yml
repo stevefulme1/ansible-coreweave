@@ -13,9 +13,11 @@ argument_specs:
       coreweave_networking_password:
         description: Authentication password
         type: str
+        no_log: true
       coreweave_networking_api_key:
         description: API key for authentication
         type: str
+        no_log: true
       coreweave_networking_validate_certs:
         description: Validate SSL certificates
         type: bool
