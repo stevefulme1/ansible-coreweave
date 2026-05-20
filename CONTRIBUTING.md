@@ -1,168 +1,27 @@
-# Contributing to CoreWeave Ansible Collection
+# WELCOME TO ANSIBLE GITHUB
 
-Thank you for your interest in contributing to the CoreWeave Ansible Collection!
+Hi! Nice to see you here!
 
-## Getting Started
+## QUESTIONS ?
 
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/ansible-coreweave.git`
-3. Create a branch: `git checkout -b feature/your-feature-name`
-4. Make your changes
-5. Run tests locally
-6. Commit and push
-7. Open a Pull Request
+Please see the [Community Guide](https://docs.ansible.com/ansible/latest/community/index.html) for information on how to ask questions on the [mailing lists](https://docs.ansible.com/ansible/latest/community/communication.html#mailing-list-information) and IRC.
 
-## Development Setup
+The GitHub issue tracker is not the best place for questions for various reasons, but both IRC and the mailing list are very helpful places for those things, as the community page explains best.
 
-Install development dependencies:
+## CONTRIBUTING ?
 
-```bash
-pip install -r requirements.txt
-pip install -r tests/requirements.txt
-ansible-galaxy collection install kubernetes.core
-```
+By contributing to this project you agree to the Developer Certificate of Origin (DCO). This document was created by the Linux Kernel community and is a simple statement that you, as a contributor, have the legal right to make the contribution.
 
-## Code Standards
+You can read more about the [DCO and Contributor License Agreements](https://docs.ansible.com/ansible/latest/community/collection_contributors/collection_requirements.html#contributor-license-agreements) on the Ansible docsite.
 
-### Python Code
-- Follow PEP 8 style guide
-- Use type hints where appropriate
-- Maximum line length: 120 characters
-- Use descriptive variable and function names
+Please review the [Community Guide](https://docs.ansible.com/ansible/latest/community/index.html) for more information on contributing to Ansible.
 
-### Ansible Modules
-- Follow [Ansible module conventions](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html)
-- Include comprehensive documentation with DOCUMENTATION, EXAMPLES, and RETURN blocks
-- Support check mode where applicable
-- Return changed status accurately
-- Handle errors gracefully with meaningful messages
+## BUG TO REPORT ?
 
-### Documentation
-- Update README.md for new features
-- Add examples for new modules
-- Update CHANGELOG.md following Keep a Changelog format
-- Include docstrings for all Python functions
+First and foremost, also check the [Community Guide](https://docs.ansible.com/ansible/latest/community/index.html).
 
-## Testing
+You can report bugs or make enhancement requests at the [Ansible GitHub issue page](http://github.com/ansible/ansible/issues/new/choose) by filling out the issue template that will be presented.
 
-### Run Linting
+Also please make sure you are testing on the latest released version of Ansible or the development branch; see the [Installation Guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) for details.
 
-```bash
-ansible-lint
-```
-
-### Run Sanity Tests
-
-```bash
-ansible-test sanity --docker -v
-```
-
-### Run Unit Tests
-
-```bash
-pytest tests/unit/ -v
-```
-
-### Run Integration Tests
-
-```bash
-# Requires access to a CoreWeave cluster
-ansible-test integration --docker -v
-```
-
-## Adding New Modules
-
-1. Create module file in `plugins/modules/`
-2. Add unit tests in `tests/unit/plugins/modules/`
-3. Add integration tests in `tests/integration/targets/`
-4. Update `meta/runtime.yml` with new module routing
-5. Add examples to README.md
-6. Update CHANGELOG.md
-
-## Adding New Plugins
-
-### Inventory Plugins
-Place in `plugins/inventory/` and add example configuration to README.md
-
-### Event Source Plugins
-Place in `extensions/eda/plugins/event_source/` with example rulebooks
-
-## Pull Request Process
-
-1. **Before Submitting**
-   - Run all tests locally
-   - Update documentation
-   - Add changelog entry
-   - Ensure code follows style guidelines
-
-2. **PR Description**
-   - Clear title describing the change
-   - Description of what changed and why
-   - Link to any related issues
-   - Breaking changes clearly noted
-
-3. **Review Process**
-   - At least one maintainer approval required
-   - All CI checks must pass
-   - Address all review comments
-
-4. **Merging**
-   - Maintainers will merge approved PRs
-   - Squash merge for feature branches
-   - Linear history maintained on main
-
-## Commit Messages
-
-Follow conventional commits format:
-
-```
-type(scope): subject
-
-body
-
-footer
-```
-
-Types:
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation only
-- `style`: Code style changes
-- `refactor`: Code refactoring
-- `test`: Adding tests
-- `chore`: Maintenance tasks
-
-Examples:
-```
-feat(modules): add coreweave_virtual_server module
-
-Add new module for managing CoreWeave VirtualServer CRDs with support
-for GPU selection, memory/CPU configuration, and storage volumes.
-
-Closes #123
-```
-
-## Code Review Guidelines
-
-When reviewing PRs:
-- Be constructive and respectful
-- Focus on code quality and maintainability
-- Test functionality when possible
-- Suggest improvements, don't demand perfection
-
-## Community
-
-- Be respectful and inclusive
-- Follow the [Code of Conduct](CODE_OF_CONDUCT.md)
-- Help others learn and grow
-- Share knowledge and best practices
-
-## Questions?
-
-- Open an issue for bugs or feature requests
-- Tag issues with appropriate labels
-- Provide clear reproduction steps for bugs
-
-## License
-
-By contributing, you agree that your contributions will be licensed under the Apache-2.0 License.
+Thanks!
