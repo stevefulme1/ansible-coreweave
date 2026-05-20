@@ -1,12 +1,2 @@
+---
 requires_ansible: '>=2.16.0'
-action_groups:
-  coreweave:
-  - coreweave_virtual_server
-  - coreweave_virtual_server_info
-  - coreweave_inference_service
-  - coreweave_inference_service_info
-  - coreweave_vpc
-  - coreweave_vpc_info
-  - coreweave_storage_volume
-  - coreweave_storage_volume_info
-  - coreweave_node_pool_info
