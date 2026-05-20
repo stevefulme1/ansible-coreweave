@@ -108,7 +108,7 @@ def main():
         if resource_id:
             existing = client.get("tensorboard", resource_id)
         elif module.params.get("name"):
-            candidates = client.list("tensorboard", {{"name": module.params["name"]}})
+            candidates = client.list("tensorboard", {"name": module.params["name"]})
             if candidates:
                 existing = candidates[0]
 

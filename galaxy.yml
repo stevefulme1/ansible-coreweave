@@ -5,7 +5,7 @@ version: 0.1.0
 readme: README.md
 authors:
   - Steve Fulmer <sfulmer@redhat.com>
-description: Ansible collection for managing CoreWeave cloud infrastructure Status: Pre-release. Under active development.
+description: Ansible collection for managing CoreWeave cloud infrastructure. Pre-release, under active development.
 license_file: LICENSE
 tags:
   - coreweave

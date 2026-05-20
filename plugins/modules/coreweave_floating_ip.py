@@ -108,7 +108,7 @@ def main():
         if resource_id:
             existing = client.get("floating_ip", resource_id)
         elif module.params.get("name"):
-            candidates = client.list("floating_ip", {{"name": module.params["name"]}})
+            candidates = client.list("floating_ip", {"name": module.params["name"]})
             if candidates:
                 existing = candidates[0]
 

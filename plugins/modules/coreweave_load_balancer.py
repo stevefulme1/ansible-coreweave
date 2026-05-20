@@ -108,7 +108,7 @@ def main():
         if resource_id:
             existing = client.get("load_balancer", resource_id)
         elif module.params.get("name"):
-            candidates = client.list("load_balancer", {{"name": module.params["name"]}})
+            candidates = client.list("load_balancer", {"name": module.params["name"]})
             if candidates:
                 existing = candidates[0]
 

@@ -35,4 +35,3 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: pip install pytest requests ansible-core
       - run: pytest tests/unit/ -v
-

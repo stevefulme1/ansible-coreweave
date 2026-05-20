@@ -4,7 +4,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -162,8 +162,8 @@ class TestListNetworkPolicy:
     def test_list_returns_all(self, mock_api_client):
         """Verify list returns all resources."""
         mock_api_client.list.return_value = [
-            {"policy_name": "1", "policy_name": "first"},
-            {"policy_name": "2", "policy_name": "second"},
+            {"id": "1", "policy_name": "first"},
+            {"id": "2", "policy_name": "second"},
         ]
         result = mock_api_client.list("network_policy")
         assert len(result) == 2
@@ -175,7 +175,7 @@ class TestListNetworkPolicy:
 
     def test_list_with_filter(self, mock_api_client):
         """Verify list applies filters."""
-        mock_api_client.list.return_value = [{"policy_name": "1", "policy_name": "match"}]
+        mock_api_client.list.return_value = [{"id": "1", "policy_name": "match"}]
         result = mock_api_client.list("network_policy", filters={"policy_name": "match"})
         assert len(result) == 1
 

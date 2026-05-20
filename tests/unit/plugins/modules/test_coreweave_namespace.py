@@ -4,7 +4,7 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -162,8 +162,8 @@ class TestListNamespace:
     def test_list_returns_all(self, mock_api_client):
         """Verify list returns all resources."""
         mock_api_client.list.return_value = [
-            {"namespace_name": "1", "namespace_name": "first"},
-            {"namespace_name": "2", "namespace_name": "second"},
+            {"id": "1", "namespace_name": "first"},
+            {"id": "2", "namespace_name": "second"},
         ]
         result = mock_api_client.list("namespace")
         assert len(result) == 2
@@ -175,7 +175,7 @@ class TestListNamespace:
 
     def test_list_with_filter(self, mock_api_client):
         """Verify list applies filters."""
-        mock_api_client.list.return_value = [{"namespace_name": "1", "namespace_name": "match"}]
+        mock_api_client.list.return_value = [{"id": "1", "namespace_name": "match"}]
         result = mock_api_client.list("namespace", filters={"namespace_name": "match"})
         assert len(result) == 1
 

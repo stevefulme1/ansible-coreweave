@@ -31,15 +31,16 @@ options:
     password:
         description: Authentication password.
         type: str
-        no_log: true
     api_key:
         description: API key for authentication.
         type: str
-        no_log: true
     validate_certs:
         description: Whether to validate SSL certificates.
         type: bool
         default: true
+    name:
+        description: Filter by name.
+        type: str
 
     volume_name:
         description: The volume name.

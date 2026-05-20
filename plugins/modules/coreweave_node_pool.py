@@ -36,15 +36,19 @@ options:
     password:
         description: Authentication password.
         type: str
-        no_log: true
     api_key:
         description: API key for authentication.
         type: str
-        no_log: true
     validate_certs:
         description: Whether to validate SSL certificates.
         type: bool
         default: true
+    pool_name:
+        description: Pool name.
+        type: str
+    name:
+        description: Name.
+        type: str
 """
 
 EXAMPLES = r"""
@@ -105,7 +109,7 @@ def main():
         if resource_id:
             existing = client.get("node_pool", resource_id)
         elif module.params.get("name"):
-            candidates = client.list("node_pool", {{"name": module.params["name"]}})
+            candidates = client.list("node_pool", {"name": module.params["name"]})
             if candidates:
                 existing = candidates[0]
 
