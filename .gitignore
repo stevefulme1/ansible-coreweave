@@ -27,3 +27,4 @@ collections/
 
 # Logs
 *.log
+.ansible/
