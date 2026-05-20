@@ -1,5 +1,29 @@
 # Changelog
 
+## [3.0.0] - 2026-05-20
+
+### Added
+- `coreweave_virtual_server` module - manage VirtualServer CRD (GPU instances)
+- `coreweave_virtual_server_info` module - list/get VirtualServer resources
+- `coreweave_inference_service` module - manage KServe InferenceService (model serving)
+- `coreweave_inference_service_info` module - list/get InferenceService resources
+- `coreweave_pvc` module - manage PersistentVolumeClaims (storage)
+- `coreweave_pvc_info` module - list/get PVC resources
+- `k8s_helper` module_utils - Kubernetes dynamic client wrapper for CRUD operations
+- `auth` doc_fragment - shared authentication documentation
+
+### Changed
+- All modules now use Kubernetes-native CRD approach instead of fabricated REST API
+- Collection rebuilt from scratch with correct CoreWeave API schemas
+- VirtualServer uses `virtualservers.coreweave.com/v1alpha1` CRD
+- InferenceService uses `serving.kubeflow.org/v1beta1` (KServe) CRD
+- Dependency on `kubernetes.core` collection for K8s API access
+
+### Removed
+- All previous fabricated REST API modules (50+ modules)
+- Fabricated roles, inventory plugin, and EDA source plugins
+- `coreweave_api` module_utils (fake REST client)
+
 ## [2.1.2] - 2026-05-18
 
 ### Security
