@@ -34,7 +34,8 @@ def get_api_client(module):
         module.fail_json on configuration errors.
     """
     if not HAS_K8S:
-        module.fail_json(msg="This module requires the kubernetes Python library. Install it with: pip install kubernetes>=28.1.0")
+        module.fail_json(
+            msg="This module requires the kubernetes Python library. Install it with: pip install kubernetes>=28.1.0")
 
     kubeconfig = module.params.get("kubeconfig")
     context = module.params.get("context")
@@ -148,7 +149,8 @@ def update_resource(module, api_version, kind, manifest, namespace):
     resource = get_resource(module, api_version, kind)
     name = manifest["metadata"]["name"]
     try:
-        result = resource.patch(body=manifest, name=name, namespace=namespace, content_type="application/merge-patch+json")
+        result = resource.patch(body=manifest, name=name, namespace=namespace,
+                                content_type="application/merge-patch+json")
         return result.to_dict()
     except ApiException as e:
         module.fail_json(msg="Failed to update {0} '{1}': {2}".format(kind, name, str(e)))
