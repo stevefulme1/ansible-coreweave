@@ -6,7 +6,6 @@ readme: README.md
 authors:
   - Steve Fulmer <sfulmer@redhat.com>
 description: Ansible collection for managing CoreWeave cloud infrastructure. Pre-release, under active development.
-license_file: LICENSE
 tags:
   - coreweave
   - cloud
