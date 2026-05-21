@@ -1,0 +1,97 @@
+---
+- name: Create coreweave_virtual_server (check mode)
+  stevefulme1.coreweave.coreweave_virtual_server:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_vs_name }}"
+    region: ORD1
+    os_type: linux
+    gpu_type: Quadro_RTX_4000
+    gpu_count: 1
+    cpu_count: 4
+    memory: 16Gi
+    root_disk_size: 40Gi
+    network_public: true
+  check_mode: true
+  register: _check
+- name: Verify check mode reports changed
+  ansible.builtin.assert:
+    that:
+      - _check is changed
+- name: Create coreweave_virtual_server
+  stevefulme1.coreweave.coreweave_virtual_server:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_vs_name }}"
+    region: ORD1
+    os_type: linux
+    gpu_type: Quadro_RTX_4000
+    gpu_count: 1
+    cpu_count: 4
+    memory: 16Gi
+    root_disk_size: 40Gi
+    network_public: true
+  register: _create
+- name: Verify coreweave_virtual_server was created
+  ansible.builtin.assert:
+    that:
+      - _create is changed
+      - _create.virtual_server is defined
+- name: Create coreweave_virtual_server again (idempotent)
+  stevefulme1.coreweave.coreweave_virtual_server:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_vs_name }}"
+    region: ORD1
+    os_type: linux
+    gpu_type: Quadro_RTX_4000
+    gpu_count: 1
+    cpu_count: 4
+    memory: 16Gi
+    root_disk_size: 40Gi
+    network_public: true
+  register: _idem
+- name: Verify create idempotency
+  ansible.builtin.assert:
+    that:
+      - _idem is not changed
+- name: Update coreweave_virtual_server
+  stevefulme1.coreweave.coreweave_virtual_server:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_vs_name }}"
+    region: ORD1
+    os_type: linux
+    gpu_type: Quadro_RTX_4000
+    gpu_count: 1
+    cpu_count: 8
+    memory: 32Gi
+    root_disk_size: 40Gi
+    network_public: true
+  register: _update
+- name: Verify coreweave_virtual_server was updated
+  ansible.builtin.assert:
+    that:
+      - _update is changed
+- name: Delete coreweave_virtual_server
+  stevefulme1.coreweave.coreweave_virtual_server:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_vs_name }}"
+    state: absent
+  register: _delete
+- name: Verify coreweave_virtual_server was deleted
+  ansible.builtin.assert:
+    that:
+      - _delete is changed
+- name: Delete coreweave_virtual_server again (idempotent)
+  stevefulme1.coreweave.coreweave_virtual_server:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_vs_name }}"
+    state: absent
+  register: _delete_idem
+- name: Verify delete idempotency
+  ansible.builtin.assert:
+    that:
+      - _delete_idem is not changed

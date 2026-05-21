@@ -1,0 +1,101 @@
+---
+- name: Create coreweave_inference_service (check mode)
+  stevefulme1.coreweave.coreweave_inference_service:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_isvc_name }}"
+    runtime: custom
+    container_image: "{{ oci_coreweave_isvc_image }}"
+    container_port: 80
+    gpu_type: Quadro_RTX_5000
+    gpu_count: 1
+    cpu_request: 1
+    memory_request: 8Gi
+    min_replicas: 0
+    max_replicas: 1
+  check_mode: true
+  register: _check
+- name: Verify check mode reports changed
+  ansible.builtin.assert:
+    that:
+      - _check is changed
+- name: Create coreweave_inference_service
+  stevefulme1.coreweave.coreweave_inference_service:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_isvc_name }}"
+    runtime: custom
+    container_image: "{{ oci_coreweave_isvc_image }}"
+    container_port: 80
+    gpu_type: Quadro_RTX_5000
+    gpu_count: 1
+    cpu_request: 1
+    memory_request: 8Gi
+    min_replicas: 0
+    max_replicas: 1
+  register: _create
+- name: Verify coreweave_inference_service was created
+  ansible.builtin.assert:
+    that:
+      - _create is changed
+      - _create.inference_service is defined
+- name: Create coreweave_inference_service again (idempotent)
+  stevefulme1.coreweave.coreweave_inference_service:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_isvc_name }}"
+    runtime: custom
+    container_image: "{{ oci_coreweave_isvc_image }}"
+    container_port: 80
+    gpu_type: Quadro_RTX_5000
+    gpu_count: 1
+    cpu_request: 1
+    memory_request: 8Gi
+    min_replicas: 0
+    max_replicas: 1
+  register: _idem
+- name: Verify create idempotency
+  ansible.builtin.assert:
+    that:
+      - _idem is not changed
+- name: Update coreweave_inference_service
+  stevefulme1.coreweave.coreweave_inference_service:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_isvc_name }}"
+    runtime: custom
+    container_image: "{{ oci_coreweave_isvc_image }}"
+    container_port: 80
+    gpu_type: Quadro_RTX_5000
+    gpu_count: 1
+    cpu_request: 2
+    memory_request: 16Gi
+    min_replicas: 0
+    max_replicas: 2
+  register: _update
+- name: Verify coreweave_inference_service was updated
+  ansible.builtin.assert:
+    that:
+      - _update is changed
+- name: Delete coreweave_inference_service
+  stevefulme1.coreweave.coreweave_inference_service:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_isvc_name }}"
+    state: absent
+  register: _delete
+- name: Verify coreweave_inference_service was deleted
+  ansible.builtin.assert:
+    that:
+      - _delete is changed
+- name: Delete coreweave_inference_service again (idempotent)
+  stevefulme1.coreweave.coreweave_inference_service:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_isvc_name }}"
+    state: absent
+  register: _delete_idem
+- name: Verify delete idempotency
+  ansible.builtin.assert:
+    that:
+      - _delete_idem is not changed

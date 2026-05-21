@@ -1,0 +1,67 @@
+---
+- name: Create coreweave_pvc (check mode)
+  stevefulme1.coreweave.coreweave_pvc:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_pvc_name }}"
+    storage_size: 10Gi
+    access_modes:
+      - ReadWriteOnce
+    volume_mode: Filesystem
+  check_mode: true
+  register: _check
+- name: Verify check mode reports changed
+  ansible.builtin.assert:
+    that:
+      - _check is changed
+- name: Create coreweave_pvc
+  stevefulme1.coreweave.coreweave_pvc:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_pvc_name }}"
+    storage_size: 10Gi
+    access_modes:
+      - ReadWriteOnce
+    volume_mode: Filesystem
+  register: _create
+- name: Verify coreweave_pvc was created
+  ansible.builtin.assert:
+    that:
+      - _create is changed
+      - _create.pvc is defined
+- name: Create coreweave_pvc again (idempotent)
+  stevefulme1.coreweave.coreweave_pvc:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_pvc_name }}"
+    storage_size: 10Gi
+    access_modes:
+      - ReadWriteOnce
+    volume_mode: Filesystem
+  register: _idem
+- name: Verify create idempotency
+  ansible.builtin.assert:
+    that:
+      - _idem is not changed
+- name: Delete coreweave_pvc
+  stevefulme1.coreweave.coreweave_pvc:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_pvc_name }}"
+    state: absent
+  register: _delete
+- name: Verify coreweave_pvc was deleted
+  ansible.builtin.assert:
+    that:
+      - _delete is changed
+- name: Delete coreweave_pvc again (idempotent)
+  stevefulme1.coreweave.coreweave_pvc:
+    kubeconfig: "{{ oci_coreweave_kubeconfig }}"
+    namespace: "{{ oci_coreweave_namespace }}"
+    name: "{{ oci_coreweave_pvc_name }}"
+    state: absent
+  register: _delete_idem
+- name: Verify delete idempotency
+  ansible.builtin.assert:
+    that:
+      - _delete_idem is not changed
