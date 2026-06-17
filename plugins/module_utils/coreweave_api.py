@@ -8,6 +8,8 @@ CKS, VPC, and Object Storage REST APIs.
 
 from __future__ import annotations
 
+__metaclass__ = type
+
 import json
 from typing import TYPE_CHECKING
 

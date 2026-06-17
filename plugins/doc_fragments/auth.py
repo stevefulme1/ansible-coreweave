@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+__metaclass__ = type
+
 
 class ModuleDocFragment:
     """Documentation fragments for CoreWeave authentication."""
