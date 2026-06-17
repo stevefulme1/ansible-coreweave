@@ -3,7 +3,9 @@ target-version = "py312"
 
 [lint]
 select = ["E", "F", "W", "I", "UP", "S", "B"]
-ignore = ["E501", "E402", "S101", "S603", "S607", "B905", "UP008", "UP009", "UP001", "UP010", "UP036"]
+# I001: ruff merges duplicate __future__ imports; ansible-test 2.16 needs the exact
+# 3-import boilerplate on its own line, separate from `annotations`.
+ignore = ["E501", "E402", "I001", "S101", "S603", "S607", "B905", "UP008", "UP009", "UP001", "UP010", "UP036"]
 
 [lint.per-file-ignores]
 "tests/*" = ["S101", "S108"]
