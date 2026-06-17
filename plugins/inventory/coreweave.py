@@ -75,10 +75,12 @@ requirements:
 
 EXAMPLES = r"""
 # coreweave.yml inventory file
+---
 plugin: stevefulme1.coreweave.coreweave
 api_token: "{{ lookup('env', 'COREWEAVE_API_TOKEN') }}"
 
 # Only include specific clusters
+---
 plugin: stevefulme1.coreweave.coreweave
 api_token: "{{ lookup('env', 'COREWEAVE_API_TOKEN') }}"
 clusters:
@@ -86,6 +88,7 @@ clusters:
   - inference-cluster
 
 # With keyed groups
+---
 plugin: stevefulme1.coreweave.coreweave
 api_token: "{{ lookup('env', 'COREWEAVE_API_TOKEN') }}"
 keyed_groups:
