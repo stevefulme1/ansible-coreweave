@@ -7,7 +7,10 @@ license:
 readme: README.md
 authors:
   - Steve Fulmer <sfulmer@redhat.com>
-description: Ansible collection for managing CoreWeave cloud infrastructure. Pre-release, under active development.
+description: >-
+  Ansible collection for managing CoreWeave cloud infrastructure.
+  Includes modules for CKS clusters, VPCs, Object Storage, VirtualServers,
+  InferenceServices, and PVCs. Pre-release, under active development.
 tags:
   - coreweave
   - cloud
@@ -15,6 +18,9 @@ tags:
   - kubernetes
   - ai
   - ml
+  - inference
+  - hpc
+  - storage
 dependencies:
   kubernetes.core: '>=2.4.0'
 repository: https://github.com/stevefulme1/ansible-coreweave
