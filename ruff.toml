@@ -10,3 +10,4 @@ ignore = ["E501", "E402", "I001", "S101", "S603", "S607", "B905", "UP008", "UP00
 [lint.per-file-ignores]
 "tests/*" = ["S101", "S108"]
 "plugins/modules/*" = ["E402"]
+"extensions/*" = ["S104"]
