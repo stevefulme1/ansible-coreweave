@@ -1,6 +1,10 @@
 """Unit tests for coreweave_inference_service module."""
 
-from __future__ import annotations
+from __future__ import absolute_import, annotations, division, print_function
+
+__metaclass__ = type
+
+
 
 from unittest.mock import MagicMock, patch
 
