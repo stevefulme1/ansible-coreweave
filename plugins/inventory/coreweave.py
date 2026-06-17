@@ -74,23 +74,12 @@ requirements:
 """
 
 EXAMPLES = r"""
-# coreweave.yml inventory file
----
-plugin: stevefulme1.coreweave.coreweave
-api_token: "{{ lookup('env', 'COREWEAVE_API_TOKEN') }}"
-
-# Only include specific clusters
----
+# coreweave.yml — full-featured inventory file
 plugin: stevefulme1.coreweave.coreweave
 api_token: "{{ lookup('env', 'COREWEAVE_API_TOKEN') }}"
 clusters:
   - ml-training-cluster
   - inference-cluster
-
-# With keyed groups
----
-plugin: stevefulme1.coreweave.coreweave
-api_token: "{{ lookup('env', 'COREWEAVE_API_TOKEN') }}"
 keyed_groups:
   - key: gpu_type
     prefix: gpu
