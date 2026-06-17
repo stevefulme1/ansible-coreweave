@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
@@ -10,7 +9,6 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 name: coreweave
-plugin_type: inventory
 short_description: CoreWeave CKS dynamic inventory
 version_added: "0.2.0"
 description:
