@@ -16,22 +16,65 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install ansible-core ansible-lint flake8
+      - run: pip install "ansible-core>=2.16" ansible-lint ruff
       - name: Ansible Lint
-        run: ansible-lint --profile production || true
-      - name: Flake8
-        run: flake8 plugins/ --max-line-length=120 --ignore=E402,W503 --exclude=__init__.py
+        run: ansible-lint --profile production
+      - name: Ruff
+        run: ruff check plugins/ tests/
 
-  unit:
-    name: Unit Tests (Python ${{ matrix.python }})
+  sanity:
+    name: Sanity (Python ${{ matrix.python }}, ansible-core ${{ matrix.ansible }})
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python: ["3.11", "3.12", "3.13"]
+        include:
+          - python: "3.12"
+            ansible: "2.16"
+          - python: "3.12"
+            ansible: "2.18"
+          - python: "3.12"
+            ansible: "2.20"
+          - python: "3.13"
+            ansible: "2.21"
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: ansible_collections/stevefulme1/coreweave
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-      - run: pip install pytest requests ansible-core
-      - run: pytest tests/unit/ -v
+      - name: Install ansible-core
+        run: pip install "ansible-core~=${{ matrix.ansible }}.0" kubernetes>=28.1.0
+      - name: Run sanity tests
+        working-directory: ansible_collections/stevefulme1/coreweave
+        run: ansible-test sanity --docker --python ${{ matrix.python }} -v
+
+  unit:
+    name: Unit Tests (Python ${{ matrix.python }}, ansible-core ${{ matrix.ansible }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.12"
+            ansible: "2.16"
+          - python: "3.12"
+            ansible: "2.18"
+          - python: "3.12"
+            ansible: "2.20"
+          - python: "3.13"
+            ansible: "2.21"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: ansible_collections/stevefulme1/coreweave
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          pip install "ansible-core~=${{ matrix.ansible }}.0" pytest pytest-mock kubernetes>=28.1.0
+      - name: Run unit tests
+        working-directory: ansible_collections/stevefulme1/coreweave
+        run: pytest tests/unit/ -v --tb=short

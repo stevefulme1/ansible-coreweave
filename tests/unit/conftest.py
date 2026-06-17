@@ -1,24 +1,25 @@
 """Shared test fixtures for stevefulme1.coreweave collection."""
 
+from __future__ import annotations
+
 import os
 import sys
 from unittest.mock import MagicMock
 
 import pytest
 
-# Ensure collection path is importable
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
 
 
 @pytest.fixture
 def mock_module():
-    """Create a mock AnsibleModule."""
+    """Create a mock AnsibleModule with K8s auth params."""
     module = MagicMock()
     module.params = {
         "state": "present",
-        "host": "https://api.coreweave.com",
-        "api_key": "test-api-key",
-        "validate_certs": True,
+        "kubeconfig": "/tmp/kube",
+        "context": None,
+        "namespace": "default",
     }
     module.check_mode = False
     module.fail_json = MagicMock(side_effect=SystemExit(1))
@@ -34,30 +35,24 @@ def mock_module_check_mode(mock_module):
 
 
 @pytest.fixture
-def mock_client():
-    """Create a mock API client."""
-    client = MagicMock()
-    client.get.return_value = None
-    client.create.return_value = {"id": "test-123", "name": "test-resource"}
-    client.update.return_value = {"id": "test-123", "name": "test-resource-updated"}
-    client.delete.return_value = None
-    client.list.return_value = []
-    return client
+def mock_rest_module():
+    """Create a mock AnsibleModule with REST API auth params."""
+    module = MagicMock()
+    module.params = {
+        "state": "present",
+        "api_token": "test-token",
+        "api_url": "https://api.coreweave.com",
+        "validate_certs": True,
+        "timeout": 60,
+    }
+    module.check_mode = False
+    module.fail_json = MagicMock(side_effect=SystemExit(1))
+    module.exit_json = MagicMock(side_effect=SystemExit(0))
+    return module
 
 
 @pytest.fixture
-def mock_client_existing(mock_client):
-    """Create a mock API client that returns an existing resource."""
-    mock_client.get.return_value = {"id": "test-123", "name": "test-resource"}
-    return mock_client
-
-
-@pytest.fixture
-def error_client():
-    """Create a mock API client that raises errors."""
-    client = MagicMock()
-    client.get.side_effect = Exception("API connection error")
-    client.create.side_effect = Exception("API creation error")
-    client.update.side_effect = Exception("API update error")
-    client.delete.side_effect = Exception("API deletion error")
-    return client
+def mock_rest_module_check_mode(mock_rest_module):
+    """Create a mock REST module in check mode."""
+    mock_rest_module.check_mode = True
+    return mock_rest_module

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 """Kubernetes helper utilities for CoreWeave CRD modules.
@@ -7,9 +6,7 @@ Wraps the kubernetes Python client to provide CRUD operations on
 Kubernetes custom resources (VirtualServer, InferenceService, PVC).
 """
 
-from __future__ import absolute_import, division, print_function
 
-__metaclass__ = type
 
 try:
     from kubernetes import client, config
@@ -49,7 +46,7 @@ def get_api_client(module):
             except config.ConfigException:
                 config.load_kube_config(context=context)
     except Exception as e:
-        module.fail_json(msg="Failed to load Kubernetes configuration: {0}".format(str(e)))
+        module.fail_json(msg=f"Failed to load Kubernetes configuration: {str(e)}")
 
     return client.ApiClient()
 
@@ -82,7 +79,7 @@ def get_resource(module, api_version, kind):
     try:
         return dyn_client.resources.get(api_version=api_version, kind=kind)
     except Exception as e:
-        module.fail_json(msg="Failed to find resource {0}/{1}: {2}".format(api_version, kind, str(e)))
+        module.fail_json(msg=f"Failed to find resource {api_version}/{kind}: {str(e)}")
 
 
 def get_existing_resource(module, api_version, kind, name, namespace):
@@ -105,9 +102,9 @@ def get_existing_resource(module, api_version, kind, name, namespace):
     except ApiException as e:
         if e.status == 404:
             return None
-        module.fail_json(msg="Failed to get {0} '{1}': {2}".format(kind, name, str(e)))
+        module.fail_json(msg=f"Failed to get {kind} '{name}': {str(e)}")
     except Exception as e:
-        module.fail_json(msg="Failed to get {0} '{1}': {2}".format(kind, name, str(e)))
+        module.fail_json(msg=f"Failed to get {kind} '{name}': {str(e)}")
 
 
 def create_resource(module, api_version, kind, manifest, namespace):
@@ -128,9 +125,9 @@ def create_resource(module, api_version, kind, manifest, namespace):
         result = resource.create(body=manifest, namespace=namespace)
         return result.to_dict()
     except ApiException as e:
-        module.fail_json(msg="Failed to create {0}: {1}".format(kind, str(e)))
+        module.fail_json(msg=f"Failed to create {kind}: {str(e)}")
     except Exception as e:
-        module.fail_json(msg="Failed to create {0}: {1}".format(kind, str(e)))
+        module.fail_json(msg=f"Failed to create {kind}: {str(e)}")
 
 
 def update_resource(module, api_version, kind, manifest, namespace):
@@ -153,9 +150,9 @@ def update_resource(module, api_version, kind, manifest, namespace):
                                 content_type="application/merge-patch+json")
         return result.to_dict()
     except ApiException as e:
-        module.fail_json(msg="Failed to update {0} '{1}': {2}".format(kind, name, str(e)))
+        module.fail_json(msg=f"Failed to update {kind} '{name}': {str(e)}")
     except Exception as e:
-        module.fail_json(msg="Failed to update {0} '{1}': {2}".format(kind, name, str(e)))
+        module.fail_json(msg=f"Failed to update {kind} '{name}': {str(e)}")
 
 
 def delete_resource(module, api_version, kind, name, namespace):
@@ -178,9 +175,9 @@ def delete_resource(module, api_version, kind, name, namespace):
     except ApiException as e:
         if e.status == 404:
             return None
-        module.fail_json(msg="Failed to delete {0} '{1}': {2}".format(kind, name, str(e)))
+        module.fail_json(msg=f"Failed to delete {kind} '{name}': {str(e)}")
     except Exception as e:
-        module.fail_json(msg="Failed to delete {0} '{1}': {2}".format(kind, name, str(e)))
+        module.fail_json(msg=f"Failed to delete {kind} '{name}': {str(e)}")
 
 
 def list_resources(module, api_version, kind, namespace, label_selector=None, field_selector=None):
@@ -208,9 +205,9 @@ def list_resources(module, api_version, kind, namespace, label_selector=None, fi
         items = result.to_dict().get("items", [])
         return items
     except ApiException as e:
-        module.fail_json(msg="Failed to list {0}: {1}".format(kind, str(e)))
+        module.fail_json(msg=f"Failed to list {kind}: {str(e)}")
     except Exception as e:
-        module.fail_json(msg="Failed to list {0}: {1}".format(kind, str(e)))
+        module.fail_json(msg=f"Failed to list {kind}: {str(e)}")
 
 
 def apply_resource(module, api_version, kind, manifest, namespace, state="present"):

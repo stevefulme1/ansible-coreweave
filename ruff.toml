@@ -1,9 +1,10 @@
 line-length = 120
-target-version = "py310"
+target-version = "py312"
 
 [lint]
 select = ["E", "F", "W", "I", "UP", "S", "B"]
-ignore = ["E501", "S101", "S603", "S607"]
+ignore = ["E501", "E402", "S101", "S603", "S607", "B905", "UP008"]
 
 [lint.per-file-ignores]
-"tests/*" = ["S101"]
+"tests/*" = ["S101", "S108"]
+"plugins/modules/*" = ["E402"]
