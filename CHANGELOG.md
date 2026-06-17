@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.2.0] - 2026-06-17
+
+### Added
+- **REST API modules** (CoreWeave api.coreweave.com):
+  - `coreweave_cks_cluster` / `_info` — CKS cluster CRUD (`/v1beta1/cks/clusters`)
+  - `coreweave_vpc` / `_info` — VPC CRUD (`/v1beta1/networking/vpcs`)
+  - `coreweave_object_storage_key` / `_info` — Object Storage access keys (`/v1/cwobject/access-key`)
+  - `coreweave_object_storage_policy` / `_info` — Object Storage policies (`/v1/cwobject/access-policy`)
+  - `coreweave_object_storage_bucket_info` — Object Storage bucket info (`/v1/cwobject/bucket-info`)
+- **K8s CRD modules**:
+  - `coreweave_node_pool` / `_info` — CKS Node Pools (`compute.coreweave.com/v1alpha1`)
+- **Inventory plugin**:
+  - `coreweave` — dynamic inventory from CKS clusters, groups by GPU type, region, node pool
+- **EDA event source plugins** (standalone, no `ansible.eda` dependency):
+  - `webhook` — HTTP listener for Grafana/Prometheus/custom alerts
+  - `k8s_events` — K8s event watcher for CKS cluster events
+- REST API client (`coreweave_api.py`) using `ansible.module_utils.urls`
+- REST auth doc fragment for Bearer token authentication
+- Example rulebooks in `docs/eda_rulebooks.md`
+
+### Changed
+- CI updated: Python 3.12/3.13, ansible-core 2.16/2.18/2.20/2.21
+- Added sanity test job (all 4 ansible-core versions pass)
+- Replaced flake8 with ruff
+- Updated and fixed all unit tests (52 total, all passing)
+
 ## [3.0.0] - 2026-05-20
 
 ### Added
