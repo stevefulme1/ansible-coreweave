@@ -12,7 +12,7 @@ DOCUMENTATION = r"""
 ---
 module: coreweave_inference_service_info
 short_description: Retrieve CoreWeave InferenceService information
-version_added: "3.0.0"
+version_added: "0.2.0"
 description:
   - Retrieve information about KServe InferenceService resources on CoreWeave.
   - Can fetch a single InferenceService by name or list all InferenceServices

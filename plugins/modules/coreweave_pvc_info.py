@@ -12,7 +12,7 @@ DOCUMENTATION = r"""
 ---
 module: coreweave_pvc_info
 short_description: Retrieve PersistentVolumeClaim information on CoreWeave
-version_added: "3.0.0"
+version_added: "0.2.0"
 description:
   - Retrieve information about Kubernetes PersistentVolumeClaim resources
     on CoreWeave clusters.

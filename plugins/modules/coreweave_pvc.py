@@ -12,7 +12,7 @@ DOCUMENTATION = r"""
 ---
 module: coreweave_pvc
 short_description: Manage PersistentVolumeClaims on CoreWeave
-version_added: "3.0.0"
+version_added: "0.2.0"
 description:
   - Create, update, or delete Kubernetes PersistentVolumeClaim resources
     on CoreWeave clusters.
