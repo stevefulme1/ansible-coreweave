@@ -12,7 +12,7 @@ DOCUMENTATION = r"""
 ---
 module: coreweave_virtual_server
 short_description: Manage CoreWeave VirtualServer instances
-version_added: "3.0.0"
+version_added: "0.2.0"
 description:
   - Create, update, or delete CoreWeave VirtualServer custom resources.
   - VirtualServers are GPU-accelerated virtual machines running on CoreWeave's

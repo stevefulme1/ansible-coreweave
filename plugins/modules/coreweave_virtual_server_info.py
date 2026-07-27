@@ -12,7 +12,7 @@ DOCUMENTATION = r"""
 ---
 module: coreweave_virtual_server_info
 short_description: Retrieve CoreWeave VirtualServer information
-version_added: "3.0.0"
+version_added: "0.2.0"
 description:
   - Retrieve information about CoreWeave VirtualServer custom resources.
   - Can fetch a single VirtualServer by name or list all VirtualServers

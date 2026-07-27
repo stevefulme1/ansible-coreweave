@@ -12,7 +12,7 @@ DOCUMENTATION = r"""
 ---
 module: coreweave_inference_service
 short_description: Manage CoreWeave InferenceService resources
-version_added: "3.0.0"
+version_added: "0.2.0"
 description:
   - Create, update, or delete InferenceService resources on CoreWeave.
   - Supports KServe C(serving.kubeflow.org/v1beta1) InferenceService for
